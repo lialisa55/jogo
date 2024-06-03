@@ -1,44 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void aloque(int numA, int numB, int **matriz){
-    printf("aloque");
-    *matriz = (int**) malloc(numA * sizeof(int*));
+void aloque(int numA, int numB, char ***matriz){
+    *matriz = (char**) malloc(numA * sizeof(char*));
     for(int i = 0; i < numA; i++){
-        matriz[i] = (int*) malloc(numB * sizeof(int));
+        (*matriz)[i] = (char*) malloc(numB * sizeof(char));
     }
-    printf("endaloque");
 }
 
-void receba(int numA, int numB, int **matriz){
-    printf("receba");
+void receba(int numA, int numB, char **matriz){
     for (int i = 0; i < numA; i++){
         for (int j = 0; j < numB; j++){
-            scanf("%d", &matriz[i][j]);
+            scanf(" %c", &matriz[i][j]);
         }
     }
-    printf("endreceba");
 }
 
-void imprima(int numA, int numB, int **matriz){
-    printf("imprima");
+void imprima(int numA, int numB, char **matriz){
     for (int i = 0; i < numA; i++){
         for (int j = 0; j < numB; j++){
-            printf("%d ", matriz[i][j]);
+            printf("%c", matriz[i][j]);
         }
         printf("\n");
     }
-    printf("endimprima");
 }
+
+void escolha(int numA, int numB, char **matriz){
+    int vizinhos = 0;
+    for (int i = 0; i < numA; i++){
+        for (int j = 0; j < numB; j++){
+            if (matriz[i][j] == '.'){
+                vizinhos = 0;
+                if (i > 0 && matriz[i-1][j] == 'X'){
+                    vizinhos++;
+                }
+                if (i < numA - 1 && matriz[i+1][j] == 'X'){
+                    vizinhos++;
+                }
+                if (j > 0 && matriz[i][j-1] == 'X'){
+                    vizinhos++;
+                }
+                if (j < numB - 1 && matriz[i][j+1] == 'X'){
+                    vizinhos++;
+                }
+
+                if (vizinhos % 2 == 0){
+                    matriz[i][j] = '*';
+                }
+            }
+        }
+    }
+}
+
 
 int main()
 {
-    int numA, numB, **matriz;
+    int numA, numB;
+    char **matriz;
     scanf("%d %d", &numA, &numB);
     getchar();
 
     aloque(numA, numB, &matriz);
     receba(numA, numB, matriz);
+    escolha(numA, numB, matriz);
     imprima(numA, numB, matriz);
 
     return 0;
