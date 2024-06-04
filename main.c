@@ -65,5 +65,10 @@ int main()
     escolha(numA, numB, matriz);
     imprima(numA, numB, matriz);
 
+    for (int i = 0; i < numA; i++){
+        free(matriz[i]);
+    }
+    free(matriz);
+
     return 0;
 }
